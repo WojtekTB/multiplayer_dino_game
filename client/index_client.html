@@ -7,14 +7,35 @@
         top: 0px;
         left: 0px;
       }
+      #Stats {
+        position: absolute;
+        top: 0px;
+        left: 10px;
+        color: aliceblue;
+      }
     </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+      crossorigin="anonymous"
+    ></script>
     <script src="sketch.js"></script>
+    <script src="../js/Player.js"></script>
     <title>Client Side</title>
   </head>
   <body></body>
   <div id="mainSketch"></div>
+  <div id="Stats">
+    <div>
+      <p id="score">Score: 0 pt.</p>
+    </div>
+
+    <div>
+      <p id="distance">Distance: 0 m.</p>
+    </div>
+  </div>
 </html>
