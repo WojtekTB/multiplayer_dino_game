@@ -5,7 +5,7 @@ var mainPlayer;
 var floorY = 500;
 
 var scoreElement = document.getElementById("score");
-var scoreElement = document.getElementById("distance");
+var distanceElement = document.getElementById("distance");
 
 function setup() {
   myCanvas = createCanvas(innerWidth, innerHeight);
