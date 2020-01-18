@@ -1,9 +1,9 @@
 class Player {
-  constructor(maxSpeed, jumpStrength, floorY) {
+  constructor(maxSpeed, jumpStrength, floorY, animations) {
     this.floorY = floorY;
     this.x = 0;
     this.y = this.floorY;
-    this.speed = 0;
+    this.speed = 1;
     this.maxSpeed = maxSpeed;
     this.globalSpeed = 1;
     this.onGround = false;
@@ -11,6 +11,10 @@ class Player {
     this.vy = 0;
     this.maxLandLag = 50;
     this.landLag = this.maxLandLag;
+
+    this.animations = animations;
+    this.animationCounter = 0;
+    this.maxAnimationCounter = this.animations.length;
   }
   setGlobalSpeed(speed) {
     this.globalSpeed = speed;
@@ -31,7 +35,20 @@ class Player {
     }
     fill(255, 0, 0);
     rect(showX, this.y, 50, -50);
+
+    image(
+      this.animations[Math.floor(this.animationCounter)],
+      showX,
+      this.y,
+      50,
+      -50
+    );
     this.run();
+
+    this.animationCounter += (this.speed + this.globalSpeed) * 0.08;
+    if (this.animationCounter > this.maxAnimationCounter) {
+      this.animationCounter = 0;
+    }
   }
   jump() {
     if (this.onGround) {
@@ -59,7 +76,7 @@ class Player {
     } else {
       this.y += this.vy;
       this.onGround = false;
-      this.addVelDown(3);
+      this.addVelDown(this.jumpStrength / 20);
     }
     if (this.landLag < this.maxLandLag) {
       this.landLag++;
