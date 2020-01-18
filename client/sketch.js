@@ -4,6 +4,9 @@ var myCanvas;
 var mainPlayer;
 var floorY = 500;
 
+var scoreElement = document.getElementById("score");
+var scoreElement = document.getElementById("distance");
+
 function setup() {
   myCanvas = createCanvas(innerWidth, innerHeight);
   myCanvas.parent("mainSketch");
@@ -19,6 +22,7 @@ function draw() {
   if (keyIsDown(32)) {
     mainPlayer.jump();
   }
+  scoreElement.write(frameCount);
 }
 
 function drawGround() {
