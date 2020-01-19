@@ -6,9 +6,9 @@ var socketID;
 var myCanvas;
 
 var cactusImage;
-var cactusContainer;
-var cactusContainer2;
-var cactusContainer3;
+var cactusContainer1 = { array: [], relativeX: 0 };
+var cactusContainer2 = { array: [], relativeX: 1 };
+var cactusContainer3 = { array: [], relativeX: 2 };
 var cactusHeight = 50;
 var cactusWidth = 25;
 
@@ -43,17 +43,21 @@ function setup() {
   socket.on("message", data => {
     socketID = data;
   });
-  socket.on("cactusMap", data => {
-    cactusContainer = data;
-    // console.log(data);
+  socket.on("initial-cactuses", data => {
+    console.log("init cactuses recieved");
+    //initial cactuses that one will need
+    cactusContainer2.array = data.two;
+    cactusContainer3.array = data.three;
+    // console.log(cactusContainer2, cactusContainer3);
   });
-  socket.on("cactusMap2", data => {
-    cactusContainer2 = data;
-    // console.log(data);
-  });
-  socket.on("cactusMap3", data => {
-    cactusContainer3 = data;
-    // console.log(data);
+  socket.on("cactus-answer", data => {
+    cactusContainer1.array = cactusContainer2.array;
+    cactusContainer2.array = cactusContainer3.array;
+    cactusContainer3.array = data; //move data along the conveyor like line
+    cactusContainer1.relativeX = cactusContainer2.relativeX;
+    cactusContainer2.relativeX = cactusContainer3.relativeX;
+    cactusContainer3.relativeX++; //move the id along
+    console.log(cactusContainer1, cactusContainer2, cactusContainer3);
   });
   socket.on("players", data => {
     players = data;
@@ -117,28 +121,25 @@ function draw() {
   if (keyIsDown(32)) {
     mainPlayer.jump();
   }
+  if (mainPlayer.x / 2000 > cactusContainer2.relativeX) {
+    requestCactuses(Math.floor(mainPlayer.x / 2000) + 1);
+  }
   // mainPlayer.y = mouseY;
   // mainPlayer.vy = 0;
 }
 
 function drawCactuses() {
   let scale = 2000;
-  if ((cactusContainer != null) & (mainPlayer.x > 0)) {
-    let cactuses = cactusContainer;
-    let cactuses2 = cactusContainer2;
-    let cactuses3 = cactusContainer3;
+  if ((cactusContainer1 != null) & (mainPlayer.x > 0)) {
+    let cactuses1 = cactusContainer1.array;
+    let cactuses2 = cactusContainer2.array;
+    let cactuses3 = cactusContainer3.array;
     // let cactuses = cactusContainer[Math.floor(mainPlayer.x / scale)];
     // let cactuses2 = cactusContainer[Math.floor(mainPlayer.x / scale) - 1];
     // console.log(Math.floor(mainPlayer.x / scale));
     // fill(255, 0, 0);
     // console.log(cactuses);
-    for (cactus of cactuses) {
-      // rect(
-      //   innerWidth / 20 + (cactus.x - (mainPlayer.x % scale)),
-      //   floorY,
-      //   cactusWidth,
-      //   -cactusHeight
-      // );
+    for (cactus of cactuses2) {
       image(
         cactusImage,
         innerWidth / 10 + (cactus.x - (mainPlayer.x % scale)),
@@ -160,9 +161,9 @@ function drawCactuses() {
       }
     }
     // console.log(mainPlayer.x, mainPlayer.y);
-    if (cactuses2 != null) {
+    if (cactuses1 != null) {
       // fill(0, 255, 0);
-      for (cactus of cactuses2) {
+      for (cactus of cactuses1) {
         // rect(
         //   innerWidth / 20 + (cactus.x - (mainPlayer.x % scale)) - scale,
         //   floorY,
@@ -171,23 +172,11 @@ function drawCactuses() {
         // );
         image(
           cactusImage,
-          innerWidth / 10 + (cactus.x - (mainPlayer.x % scale)) + scale,
+          innerWidth / 10 + (cactus.x - (mainPlayer.x % scale)) - scale,
           floorY,
           cactusWidth,
           -cactusHeight
         );
-        let cactusRealX =
-          mainPlayer.x - (mainPlayer.x % scale) - scale + cactus.x;
-        if (
-          (mainPlayer.x < cactusRealX + cactusWidth) &
-          (mainPlayer.x > cactusRealX)
-        ) {
-          if (mainPlayer.y > floorY - cactusHeight) {
-            // console.log("HIT!");
-          } else {
-            // console.log("safe");
-          }
-        }
       }
     }
     // console.log(cactuses, cactuses2);
@@ -202,23 +191,11 @@ function drawCactuses() {
         // );
         image(
           cactusImage,
-          innerWidth / 10 + (cactus.x - (mainPlayer.x % scale)) - scale,
+          innerWidth / 10 + (cactus.x - (mainPlayer.x % scale)) + scale,
           floorY,
           cactusWidth,
           -cactusHeight
         );
-        let cactusRealX =
-          mainPlayer.x - (mainPlayer.x % scale) - scale + cactus.x;
-        if (
-          (mainPlayer.x < cactusRealX + cactusWidth) &
-          (mainPlayer.x > cactusRealX)
-        ) {
-          if (mainPlayer.y > floorY - cactusHeight) {
-            // console.log("HIT!");
-          } else {
-            // console.log("safe");
-          }
-        }
       }
     }
     // console.log(cactuses, cactuses2);
@@ -285,4 +262,8 @@ class Cloud {
       this.speed = random(1, 5);
     }
   }
+}
+
+function requestCactuses(x) {
+  socket.emit("cactus-request", { id: socketID, x: x });
 }

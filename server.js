@@ -69,6 +69,15 @@ var serverCactusContainer = new CactusContainer();
 
 io.sockets.on("connection", socket => {
   console.log(`New connection: ${socket.id}`);
+  io.sockets.connected[socket.id].emit("initial-cactuses", {
+    two: serverCactusContainer.range[0],
+    three: serverCactusContainer.range[1]
+  });
+  socket.on("cactus-request", data => {
+    let cactusArray = serverCactusContainer.range[data.x];
+    io.sockets.connected[data.id].emit("cactus-answer", cactusArray);
+    console.log(`Sent data of ${data.x}`);
+  });
   socket.emit("scoreBoard", scores);
   socket.send(socket.id);
   socket.on("player", playerData);
