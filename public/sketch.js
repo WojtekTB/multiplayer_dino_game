@@ -15,14 +15,17 @@ var cactusWidth = 25;
 var mainPlayer;
 var floorY = innerHeight * (2 / 3);
 var playerAnimations = [];
+var deadPlayer;
 
 var groundImage;
 var groundImageWidht;
+var cloudImage;
 
 var scoreElement;
 var distanceElement;
 
 var players = [];
+var clouds = [];
 
 function preload() {
   for (let i = 0; i < 3; i++) {
@@ -31,6 +34,8 @@ function preload() {
   }
   groundImage = loadImage(`./images/floor.png`);
   cactusImage = loadImage(`./images/cactus/cactus.PNG`);
+  deadPlayer = loadImage(`./images/dino_animation/frame_death.png`);
+  cloudImage = loadImage(`./images/cloud.png`);
 }
 
 function setup() {
@@ -55,7 +60,7 @@ function setup() {
     }
     // $("#Score").innerHTML = score;
   });
-  myCanvas = createCanvas(displayWidth, displayHeight);
+  myCanvas = createCanvas(window.innerWidth, window.innerHeight);
   myCanvas.parent("mainSketch");
   background(0);
 
@@ -71,14 +76,29 @@ function setup() {
   // cactusContainer2 = testCactusContainer.getCactuses(1001);
   console.log(cactusContainer1);
   document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
+  for (let i = 0; i < 3; i++) {
+    clouds.push(
+      new Cloud(
+        random(innerWidth, innerWidth + 300),
+        random(innerHeight * (2 / 3), 0)
+      )
+    );
+  }
+  noLoop();
 }
 
 function mousePressed() {
+  if (mouseY > innerHeight - innerHeight / 20) {
+    return;
+  }
   mainPlayer.jump();
 }
 
 function draw() {
-  background(mainPlayer.x / 500);
+  background(mainPlayer.x / 200);
+  for (cloud of clouds) {
+    cloud.show();
+  }
   drawGround();
   mainPlayer.show();
   scoreElement.innerHTML = `Score: ${mainPlayer.getScore()} pt.`;
@@ -86,6 +106,9 @@ function draw() {
   drawCactuses();
   emitMyCord();
   drawOtherPlayers();
+  if (keyIsDown(32)) {
+    mainPlayer.jump();
+  }
 }
 
 function drawCactuses() {
@@ -167,13 +190,7 @@ function drawOtherPlayers() {
     if (players[i].id == socketID) {
       continue;
     }
-    image(
-      playerAnimations[0],
-      players[i].x - mainPlayer.x,
-      players[i].y,
-      50,
-      -50
-    );
+    image(deadPlayer, players[i].x - mainPlayer.x, players[i].y, 50, -50);
   }
 }
 
@@ -207,4 +224,21 @@ function died() {
 
   noLoop();
   showGameOver();
+}
+
+class Cloud {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+    this.speed = random(1, 5);
+  }
+  show() {
+    image(cloudImage, this.x, this.y);
+    this.x -= this.speed;
+    if (this.x < -cloudImage.width) {
+      this.x = random(innerWidth, innerWidth + 300);
+      this.y = random(innerHeight * (2 / 3), 0);
+      this.speed = random(1, 5);
+    }
+  }
 }

@@ -9,7 +9,7 @@
       }
       #Stats {
         position: absolute;
-        bottom: 0px;
+        bottom: 20vh;
         left: 10px;
         color: black;
       }
@@ -19,17 +19,17 @@
       }
       #decreaseSpeed {
         left: 10px;
-        top: 10px;
+        bottom: 10px;
       }
       #addSpeed {
         right: 20px;
-        top: 10px;
+        bottom: 10px;
       }
       #speed {
         position: absolute;
         left: 40vw;
-        top: 0px;
-        color: aliceblue;
+        bottom: 0px;
+        color: black;
       }
       #game_over {
         position: absolute;
@@ -41,7 +41,8 @@
       #name {
         position: absolute;
         left: 40vw;
-        top: 30vh;
+        top: 35vh;
+        width: 0px;
         opacity: 0;
       }
       #restart {
@@ -49,15 +50,16 @@
         left: 40vw;
         top: 40vh;
         color: black;
-        width: 30vw;
+        width: 0vw;
         height: 10vh;
         background-color: aliceblue;
         opacity: 0;
+        z-index: -1;
       }
       #Score {
         position: absolute;
-        left: 30vw;
-        bottom: 2vh;
+        left: 20vw;
+        bottom: 5vh;
       }
     </style>
     <meta charset="UTF-8" />
@@ -109,6 +111,9 @@
     function showGameOver() {
       $("#game_over").css("opacity", 100 + "%");
       $("#restart").css("opacity", 100 + "%");
+      $("#restart").css("width", 30 + "vw");
+      $("#restart").css("z-index", 1);
+      $("#name").css("width", 30 + "vw");
       $("#name").css("opacity", 100 + "%");
       $("#restart").attr("disabled", false);
       $("#name").attr("disabled", false);

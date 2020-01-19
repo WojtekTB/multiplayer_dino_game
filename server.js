@@ -90,8 +90,19 @@ io.sockets.on("connection", socket => {
     players.push(data);
   });
   socket.on("score", data => {
-    // console.log(data);
-    scores.push(data);
+    console.log(data);
+    if (scores.length == 0) {
+      scores.push(data);
+    }
+    for (let i = 0; i < scores.length; i++) {
+      if (data.score > scores[i].score) {
+        scores.splice(i, 0, data);
+        break;
+      }
+    }
+    if (scores.length > 5) {
+      scores.pop();
+    }
     socket.emit("scoreBoard", scores);
   });
   setInterval(function() {

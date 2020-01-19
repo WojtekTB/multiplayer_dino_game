@@ -3,7 +3,7 @@ class Player {
     this.floorY = floorY;
     this.x = -50;
     this.y = this.floorY;
-    this.speed = 3;
+    this.speed = 5;
     this.maxSpeed = maxSpeed;
     this.globalSpeed = 1;
     this.onGround = false;
