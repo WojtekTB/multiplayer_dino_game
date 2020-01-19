@@ -42,6 +42,10 @@ class Player {
       50,
       -50
     );
+    if (hasHat) {
+      // console.log(hats, myArrayPointer);
+      image(hats[myArrayPointer], showX, this.y - 15, 50, -50);
+    }
     this.run();
 
     this.animationCounter += (this.speed + this.globalSpeed) * 0.08;

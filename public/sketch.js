@@ -26,6 +26,7 @@ var distanceElement;
 
 var players = [];
 var clouds = [];
+var hats = [];
 
 function preload() {
   for (let i = 0; i < 3; i++) {
@@ -36,9 +37,15 @@ function preload() {
   cactusImage = loadImage(`./images/cactus/cactus.PNG`);
   deadPlayer = loadImage(`./images/dino_animation/frame_death.png`);
   cloudImage = loadImage(`./images/cloud.png`);
+  for (let i = 0; i < hatArray.length; i++) {
+    hats.push(loadImage("./images/dino_animation/" + hatArray[i]));
+    console.log("./images/dino_animation/" + hatArray[i]);
+  }
+  hats.pop();
 }
 
 function setup() {
+  noLoop();
   socket = io();
   socket.on("message", data => {
     socketID = data;

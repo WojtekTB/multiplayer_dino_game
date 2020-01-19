@@ -61,6 +61,36 @@
         left: 20vw;
         bottom: 5vh;
       }
+      #intro-div {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background: aliceblue;
+        margin: auto;
+        text-align: center;
+        padding-top: 100px;
+        height: 100%;
+      }
+      #intro-title {
+        width: 90vw;
+      }
+      #intro-button {
+        width: 25vw;
+      }
+      #hat-background {
+        width: 20vw;
+        height: 20vw;
+      }
+      #prevButton {
+        width: 20vw;
+        height: 5vh;
+        background: cornsilk;
+      }
+      #nextButton {
+        width: 20vw;
+        height: 5vh;
+        background: cornsilk;
+      }
     </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -125,5 +155,55 @@
       });
       window.location.reload();
     }
+  </script>
+
+  <!-- Initial intro-->
+  <div id="intro-div">
+    <img src="./images/title.png" id="intro-title" />
+    <input type="image" src="./images/elements/play.png" id="intro-button" />
+    <div id="hat-div">
+      <button id="prevButton">Prev</button>
+      <img src="./images/dino_animation/bunny_hat.png" id="hat-image" />
+      <button id="nextButton">Next</button>
+    </div>
+  </div>
+
+  <script>
+    let hatArray = [
+      "bunny_hat.png",
+      "crown_hat.png",
+      "pizza_hat.png",
+      "poop_hat.png",
+      "nothing_hat.png"
+    ];
+    var myArrayPointer = 0;
+    $("#nextButton").click(() => {
+      myArrayPointer = myArrayPointer + 1;
+      if (myArrayPointer > 4) {
+        myArrayPointer = 0;
+      }
+      $("#hat-image").attr(
+        "src",
+        `./images/dino_animation/${hatArray[myArrayPointer]}`
+      );
+    });
+    $("#prevButton").click(() => {
+      myArrayPointer = myArrayPointer - 1;
+      if (myArrayPointer < 0) {
+        myArrayPointer = 4;
+      }
+      $("#hat-image").attr(
+        "src",
+        `./images/dino_animation/${hatArray[myArrayPointer]}`
+      );
+    });
+    var hasHat = false;
+    $("#intro-button").click(() => {
+      if (myArrayPointer != 4) {
+        hasHat = true;
+      }
+      $("#intro-div").remove();
+      loop();
+    });
   </script>
 </html>
