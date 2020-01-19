@@ -116,7 +116,9 @@ function draw() {
   scoreElement.innerHTML = `Score: ${mainPlayer.getScore()} pt.`;
   distanceElement.innerHTML = `Distance: ${mainPlayer.getDistance()} m.`;
   drawCactuses();
-  emitMyCord();
+  if (frameCount % 500) {
+    emitMyCord();
+  }
   drawOtherPlayers();
   if (keyIsDown(32)) {
     mainPlayer.jump();

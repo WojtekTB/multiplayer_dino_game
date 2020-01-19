@@ -46,11 +46,7 @@ class CactusContainer {
     let cactuses = [];
     for (let i = 0; i < numberOfCactuses; i++) {
       cactuses.push(
-        Cactus.makeCactus(
-          getRandomArbitrary(200, this.rangeScale + 200),
-          25,
-          50
-        )
+        Cactus.makeCactus(getRandomArbitrary(200, this.rangeScale), 25, 50)
       );
     }
     this.range.push(cactuses);
