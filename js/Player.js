@@ -33,8 +33,6 @@ class Player {
     if (this.x >= innerWidth / 2) {
       showX = innerWidth / 2;
     }
-    fill(255, 0, 0);
-    rect(showX, this.y, 50, -50);
 
     image(
       this.animations[Math.floor(this.animationCounter)],

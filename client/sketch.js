@@ -7,6 +7,7 @@ var floorY = 500;
 var playerAnimations = [];
 
 var groundImage;
+var groundImageWidht;
 
 var scoreElement;
 var distanceElement;
@@ -24,6 +25,8 @@ function setup() {
   myCanvas.parent("mainSketch");
   background(0);
 
+  groundImageWidht = groundImage.width;
+
   mainPlayer = new Player(10, 50, floorY, playerAnimations);
 
   scoreElement = document.getElementById("score");
@@ -38,9 +41,17 @@ function draw() {
     mainPlayer.jump();
   }
   scoreElement.innerHTML = `Score: ${mainPlayer.getScore()} pt.`;
+  distanceElement.innerHTML = `Distance: ${mainPlayer.x} m.`;
 }
 
 function drawGround() {
   fill(255);
   rect(0, floorY, innerWidth, innerHeight - floorY);
+  image(groundImage, (-1 * mainPlayer.x) % innerWidth, floorY - 15, innerWidth);
+  image(
+    groundImage,
+    -1 * (mainPlayer.x % innerWidth) + innerWidth,
+    floorY - 15,
+    innerWidth
+  );
 }
