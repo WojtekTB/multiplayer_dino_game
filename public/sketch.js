@@ -43,12 +43,7 @@ function setup() {
     // console.log(data);
   });
   socket.on("players", data => {
-    // players = data;
-    if (data.id == socketID) {
-      return;
-    }
-    image(playerAnimations[0], mainPlayer.x - data.x, floorY, 25, -50);
-    players.push({ x: mainPlayer.x, counter: 5 });
+    players = data;
   });
 
   socket.on("scoreBoard", data => {
@@ -169,11 +164,6 @@ function drawOtherPlayers() {
   for (let i = 0; i < players.length; i++) {
     // console.log("12345uy");
     image(playerAnimations[0], players[i].x - mainPlayer.x, floorY, 25, -50);
-    players[i].counter--;
-    if (players[i].counter < 0) {
-      players.splice(i, 5);
-      // console.log("123");
-    }
   }
 }
 
