@@ -1,7 +1,8 @@
 var express = require("express");
 
 var app = express();
-var server = app.listen(8000);
+const port = process.env.PORT;
+var server = app.listen(port || 8000);
 
 app.use(express.static(`public`));
 
@@ -22,6 +23,7 @@ var players = [];
 function playerData(data) {
   if (players.length == 0) {
     players;
+    x;
   }
   for (let i = 0; i < players.length; i++) {}
 }
