@@ -136,14 +136,17 @@
   </ul>
   <script>
     // $("#restart").disabled = true;
-    $("#restart").attr("disabled", true);
+    // $("#restart").attr("disabled", true);
+    $("#restart").click();
     $("#name").attr("disabled", true);
     function showGameOver() {
+      $("#restart").click(myReload);
       $("#game_over").css("opacity", 100 + "%");
       $("#restart").css("opacity", 100 + "%");
       $("#restart").css("width", 30 + "vw");
       $("#restart").css("z-index", 1);
       $("#name").css("width", 30 + "vw");
+      $("#name").css("left", 40 + "vw");
       $("#name").css("opacity", 100 + "%");
       $("#restart").attr("disabled", false);
       $("#name").attr("disabled", false);

@@ -96,6 +96,9 @@ io.sockets.on("connection", socket => {
   });
   socket.on("score", data => {
     console.log(data);
+    if (data.name == ``) {
+      return;
+    }
     if (scores.length == 0) {
       scores.push(data);
     }

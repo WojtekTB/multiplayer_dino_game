@@ -130,6 +130,9 @@ function draw() {
   if (keyIsDown(32)) {
     mainPlayer.jump();
   }
+  if (touches.length != 0) {
+    mainPlayer.jump();
+  }
   if (mainPlayer.x / 2000 > cactusContainer2.relativeX) {
     requestCactuses(Math.floor(mainPlayer.x / 2000) + 1);
   }
