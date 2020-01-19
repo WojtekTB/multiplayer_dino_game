@@ -137,6 +137,7 @@
   <script>
     // $("#restart").disabled = true;
     // $("#restart").attr("disabled", true);
+
     $("#restart").click();
     $("#name").attr("disabled", true);
     function showGameOver() {
@@ -201,12 +202,14 @@
       );
     });
     var hasHat = false;
-    $("#intro-button").click(() => {
-      if (myArrayPointer != 4) {
-        hasHat = true;
-      }
-      $("#intro-div").remove();
-      loop();
+    $(window).ready(function() {
+      $("#intro-button").click(() => {
+        if (myArrayPointer != 4) {
+          hasHat = true;
+        }
+        $("#intro-div").remove();
+        loop();
+      });
     });
   </script>
 </html>
