@@ -89,24 +89,6 @@ io.sockets.on("connection", socket => {
     }
   });
   socket.on("x", data => {
-    socket.emit(
-      "cactusMap",
-      serverCactusContainer.range[
-        Math.floor(data.x / serverCactusContainer.rangeScale)
-      ]
-    );
-    socket.emit(
-      "cactusMap2",
-      serverCactusContainer.range[
-        Math.floor(data.x / serverCactusContainer.rangeScale) + 1
-      ]
-    );
-    socket.emit(
-      "cactusMap3",
-      serverCactusContainer.range[
-        Math.floor(data.x / serverCactusContainer.rangeScale) - 1
-      ]
-    );
     for (let i = 0; i < players.length; i++) {
       if (players[i].id == data.id) {
         players[i].x = data.x;
