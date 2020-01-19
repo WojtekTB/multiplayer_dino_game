@@ -73,6 +73,13 @@ io.sockets.on("connection", socket => {
   socket.send(socket.id);
   socket.on("player", playerData);
   socket.emit("cactusMap", serverCactusContainer.range);
+  socket.on("dead", data => {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].id == data.id) {
+        players.splice(i, 1);
+      }
+    }
+  });
   socket.on("x", data => {
     for (let i = 0; i < players.length; i++) {
       if (players[i].id == data.id) {

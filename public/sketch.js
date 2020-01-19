@@ -47,12 +47,13 @@ function setup() {
   });
 
   socket.on("scoreBoard", data => {
-    // console.log(data);
     let score = "";
     for (point of data) {
-      score += `\nName: ${point.name}  Score: ${point.score}`;
+      // score += `\nName: ${point.name}  Score: ${point.score}`;
+      console.log("I added stuff");
+      $("#Score").append(`<li>Name: ${point.name}  Score: ${point.score}</li>`);
     }
-    $("#Score").innerHTML = score;
+    // $("#Score").innerHTML = score;
   });
   myCanvas = createCanvas(displayWidth, displayHeight);
   myCanvas.parent("mainSketch");
@@ -163,7 +164,16 @@ function drawOtherPlayers() {
   }
   for (let i = 0; i < players.length; i++) {
     // console.log("12345uy");
-    image(playerAnimations[0], players[i].x - mainPlayer.x, floorY, 25, -50);
+    if (players[i].id == socketID) {
+      continue;
+    }
+    image(
+      playerAnimations[0],
+      players[i].x - mainPlayer.x,
+      players[i].y,
+      50,
+      -50
+    );
   }
 }
 
@@ -192,6 +202,7 @@ function addSpeed() {
   document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
 }
 function died() {
+  socket.emit("dead", { id: socketID });
   console.log("you died");
 
   noLoop();
