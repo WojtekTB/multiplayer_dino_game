@@ -84,7 +84,7 @@ function setup() {
       )
     );
   }
-  noLoop();
+  // noLoop();
 }
 
 function mousePressed() {
