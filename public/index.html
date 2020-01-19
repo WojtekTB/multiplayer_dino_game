@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      #mainSketch {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+      }
+      #Stats {
+        position: absolute;
+        bottom: 0px;
+        left: 10px;
+        color: black;
+      }
+    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+
+    <script src="sketch.js"></script>
+    <script src="./js/Player.js"></script>
+    <script src="./js/CactusContainer.js"></script>
+    <title>Client Side</title>
+  </head>
+  <body></body>
+  <div id="mainSketch"></div>
+  <div id="Stats">
+    <p id="score">Score: 0 pt.</p>
+    <p id="distance">Distance: 0 m.</p>
+  </div>
+</html>
