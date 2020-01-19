@@ -59,10 +59,11 @@ class Player {
 
   moveForward() {
     this.x += this.speed + this.globalSpeed;
+    this.globalSpeed = this.x / 5000;
   }
 
   getScore() {
-    return this.x;
+    return Math.floor(this.x);
   }
 
   run() {
