@@ -3,7 +3,7 @@
 var myCanvas;
 
 var mainPlayer;
-var floorY = 500;
+var floorY = innerHeight * (2 / 3);
 var playerAnimations = [];
 
 var groundImage;
@@ -27,19 +27,23 @@ function setup() {
 
   groundImageWidht = groundImage.width;
 
-  mainPlayer = new Player(10, 50, floorY, playerAnimations);
+  mainPlayer = new Player(10, innerHeight * 0.08, floorY, playerAnimations);
 
   scoreElement = document.getElementById("score");
   distanceElement = document.getElementById("distance");
 }
 
+function mousePressed() {
+  mainPlayer.jump();
+}
+
 function draw() {
-  background(0);
+  background(mainPlayer.x / 1000);
   drawGround();
   mainPlayer.show();
-  if (keyIsDown(32)) {
-    mainPlayer.jump();
-  }
+  //   if (keyIsDown(32)) {
+  //     mainPlayer.jump();
+  //   }
   scoreElement.innerHTML = `Score: ${mainPlayer.getScore()} pt.`;
   distanceElement.innerHTML = `Distance: ${mainPlayer.x} m.`;
 }

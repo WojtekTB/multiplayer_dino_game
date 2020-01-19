@@ -1,7 +1,7 @@
 class Player {
   constructor(maxSpeed, jumpStrength, floorY, animations) {
     this.floorY = floorY;
-    this.x = 0;
+    this.x = -50;
     this.y = this.floorY;
     this.speed = 1;
     this.maxSpeed = maxSpeed;
@@ -9,7 +9,7 @@ class Player {
     this.onGround = false;
     this.jumpStrength = jumpStrength;
     this.vy = 0;
-    this.maxLandLag = 50;
+    this.maxLandLag = 40;
     this.landLag = this.maxLandLag;
 
     this.animations = animations;
@@ -30,8 +30,8 @@ class Player {
   }
   show() {
     let showX = this.x;
-    if (this.x >= innerWidth / 2) {
-      showX = innerWidth / 2;
+    if (this.x >= innerWidth / 20) {
+      showX = innerWidth / 20;
     }
 
     image(

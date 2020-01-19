@@ -11,6 +11,11 @@ class CactusContainer {
   }
   getCactuses(x) {
     let placeOnRange = Math.floor(x / this.rangeScale);
+    try {
+      this.range[placeOnRange];
+    } catch (e) {
+      console.log(e + " so I am adding more cactuses");
+    }
   }
 }
 
