@@ -13,11 +13,43 @@
         left: 10px;
         color: black;
       }
+      .button {
+        position: absolute;
+        max-width: 10vw;
+      }
+      #decreaseSpeed {
+        left: 10px;
+        top: 10px;
+      }
+      #addSpeed {
+        right: 10px;
+        top: 10px;
+      }
+      #speed {
+        position: absolute;
+        left: 40vw;
+        top: 0px;
+        color: aliceblue;
+      }
+      #game_over {
+        position: absolute;
+        left: 0vw;
+        top: 20vh;
+        width: 100vw;
+        opacity: 0;
+      }
+      #restart {
+        position: absolute;
+        left: 50vw;
+        top: 50vh;
+        /* opacity: 100%; */
+      }
     </style>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 
     <script src="sketch.js"></script>
@@ -31,4 +63,26 @@
     <p id="score">Score: 0 pt.</p>
     <p id="distance">Distance: 0 m.</p>
   </div>
+  <input
+    type="image"
+    src="./images/elements/play1.png"
+    class="button"
+    id="decreaseSpeed"
+    onclick="decreaseSpeed()"
+  />
+  <p id="speed">Speed:</p>
+  <input
+    type="image"
+    src="./images/elements/play.png"
+    class="button"
+    id="addSpeed"
+    onclick="addSpeed()"
+  />
+  <img src="./images/game_over.png" id="game_over" />
+  <button id="restart" onclick="reset();" />
+  <script>
+    function showGameOver() {
+      $("#game_over").css("opacity", 100 + "%");
+    }
+  </script>
 </html>

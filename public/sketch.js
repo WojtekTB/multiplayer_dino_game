@@ -56,6 +56,7 @@ function setup() {
   // cactusContainer1 = testCactusContainer.getCactuses(1);
   // cactusContainer2 = testCactusContainer.getCactuses(1001);
   console.log(cactusContainer1);
+  document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
 }
 
 function mousePressed() {
@@ -67,7 +68,7 @@ function draw() {
   drawGround();
   mainPlayer.show();
   scoreElement.innerHTML = `Score: ${mainPlayer.getScore()} pt.`;
-  distanceElement.innerHTML = `Distance: ${mainPlayer.x} m.`;
+  distanceElement.innerHTML = `Distance: ${mainPlayer.getDistance()} m.`;
   drawCactuses();
   emitMyCord();
 }
@@ -77,7 +78,7 @@ function drawCactuses() {
   if ((cactusContainer != null) & (mainPlayer.x > 0)) {
     let cactuses = cactusContainer[Math.floor(mainPlayer.x / scale)];
     let cactuses2 = cactusContainer[Math.floor(mainPlayer.x / scale) - 1];
-    console.log(Math.floor(mainPlayer.x / scale));
+    // console.log(Math.floor(mainPlayer.x / scale));
     fill(255, 0, 0);
     for (cactus of cactuses) {
       // rect(
@@ -100,6 +101,7 @@ function drawCactuses() {
       ) {
         if (mainPlayer.y > floorY - cactusHeight) {
           console.log("HIT!");
+          died();
         } else {
           console.log("safe");
         }
@@ -154,4 +156,19 @@ function drawGround() {
 
 function emitMyCord() {
   socket.emit("x", { id: socketID, x: mainPlayer.x, y: mainPlayer.y });
+}
+
+function decreaseSpeed() {
+  mainPlayer.decreaseSpeed();
+  document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
+}
+function addSpeed() {
+  mainPlayer.addSpeed();
+  document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
+}
+function died() {
+  console.log("you died");
+
+  noLoop();
+  showGameOver();
 }

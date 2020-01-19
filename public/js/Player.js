@@ -15,6 +15,7 @@ class Player {
     this.animations = animations;
     this.animationCounter = 0;
     this.maxAnimationCounter = this.animations.length;
+    this.score = 0;
   }
   setGlobalSpeed(speed) {
     this.globalSpeed = speed;
@@ -52,8 +53,22 @@ class Player {
     if (this.onGround) {
       if (this.landLag == this.maxLandLag) {
         this.addVelUp(this.jumpStrength);
+        this.score += this.speed * 20;
         this.landLag = 0;
       }
+    }
+  }
+
+  decreaseSpeed() {
+    this.speed--;
+    if (this.speed < 0) {
+      this.speed = 0;
+    }
+  }
+  addSpeed() {
+    this.speed++;
+    if (this.speed > 10) {
+      this.speed = 10;
     }
   }
 
@@ -63,6 +78,9 @@ class Player {
   }
 
   getScore() {
+    return Math.floor(this.score);
+  }
+  getDistance() {
     return Math.floor(this.x);
   }
 
@@ -80,5 +98,6 @@ class Player {
     if (this.landLag < this.maxLandLag) {
       this.landLag++;
     }
+    this.score += this.speed;
   }
 }
