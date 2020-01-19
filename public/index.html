@@ -22,7 +22,7 @@
         top: 10px;
       }
       #addSpeed {
-        right: 10px;
+        right: 20px;
         top: 10px;
       }
       #speed {
@@ -35,14 +35,18 @@
         position: absolute;
         left: 0vw;
         top: 20vh;
-        width: 100vw;
+        width: 95vw;
         opacity: 0;
       }
       #restart {
         position: absolute;
-        left: 50vw;
-        top: 50vh;
-        /* opacity: 100%; */
+        left: 40vw;
+        top: 40vh;
+        color: black;
+        width: 30vw;
+        height: 10vh;
+        background-color: aliceblue;
+        opacity: 0;
       }
     </style>
     <meta charset="UTF-8" />
@@ -79,10 +83,17 @@
     onclick="addSpeed()"
   />
   <img src="./images/game_over.png" id="game_over" />
-  <button id="restart" onclick="reset();" />
+  <!-- <input type="button" id="restart" onclick="reset();" /> -->
+  <button id="restart" onclick="window.location.reload();">
+    Restart
+  </button>
   <script>
+    // $("#restart").disabled = true;
+    $("#restart").attr("disabled", true);
     function showGameOver() {
       $("#game_over").css("opacity", 100 + "%");
+      $("#restart").css("opacity", 100 + "%");
+      $("#restart").attr("disabled", false);
     }
   </script>
 </html>

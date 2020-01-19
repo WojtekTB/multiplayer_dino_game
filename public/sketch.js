@@ -41,7 +41,7 @@ function setup() {
     // console.log(data);
   });
 
-  myCanvas = createCanvas(innerWidth, innerHeight);
+  myCanvas = createCanvas(displayWidth, displayHeight);
   myCanvas.parent("mainSketch");
   background(0);
 
@@ -89,7 +89,7 @@ function drawCactuses() {
       // );
       image(
         cactusImage,
-        innerWidth / 20 + (cactus.x - (mainPlayer.x % scale)),
+        innerWidth / 10 + (cactus.x - (mainPlayer.x % scale)),
         floorY,
         cactusWidth,
         -cactusHeight
@@ -119,7 +119,7 @@ function drawCactuses() {
         // );
         image(
           cactusImage,
-          innerWidth / 20 + (cactus.x - (mainPlayer.x % scale)) - scale,
+          innerWidth / 10 + (cactus.x - (mainPlayer.x % scale)) - scale,
           floorY,
           cactusWidth,
           -cactusHeight

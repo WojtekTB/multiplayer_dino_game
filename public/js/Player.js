@@ -30,9 +30,9 @@ class Player {
     this.vy += vel;
   }
   show() {
-    let showX = this.x;
-    if (this.x >= innerWidth / 20) {
-      showX = innerWidth / 20;
+    let showX = this.x - this.animations[0].width / 4;
+    if (this.x >= innerWidth / 10) {
+      showX = innerWidth / 10 - this.animations[0].width / 4;
     }
 
     image(
