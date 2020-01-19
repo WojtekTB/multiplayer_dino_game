@@ -43,12 +43,21 @@ function setup() {
     // console.log(data);
   });
   socket.on("players", data => {
-    console.log("lel");
-    players.push(data);
+    // players = data;
+    if (data.id == socketID) {
+      return;
+    }
+    image(playerAnimations[0], mainPlayer.x - data.x, floorY, 25, -50);
+    players.push({ x: mainPlayer.x, counter: 5 });
   });
 
   socket.on("scoreBoard", data => {
-    console.log(data);
+    // console.log(data);
+    let score = "";
+    for (point of data) {
+      score += `\nName: ${point.name}  Score: ${point.score}`;
+    }
+    $("#Score").innerHTML = score;
   });
   myCanvas = createCanvas(displayWidth, displayHeight);
   myCanvas.parent("mainSketch");
@@ -73,13 +82,14 @@ function mousePressed() {
 }
 
 function draw() {
-  background(mainPlayer.x / 1000);
+  background(mainPlayer.x / 500);
   drawGround();
   mainPlayer.show();
   scoreElement.innerHTML = `Score: ${mainPlayer.getScore()} pt.`;
   distanceElement.innerHTML = `Distance: ${mainPlayer.getDistance()} m.`;
   drawCactuses();
   emitMyCord();
+  drawOtherPlayers();
 }
 
 function drawCactuses() {
@@ -110,10 +120,10 @@ function drawCactuses() {
         (mainPlayer.x > cactusRealX)
       ) {
         if (mainPlayer.y > floorY - cactusHeight) {
-          console.log("HIT!");
+          // console.log("HIT!");
           died();
         } else {
-          console.log("safe");
+          // console.log("safe");
         }
       }
     }
@@ -141,9 +151,9 @@ function drawCactuses() {
           (mainPlayer.x > cactusRealX)
         ) {
           if (mainPlayer.y > floorY - cactusHeight) {
-            console.log("HIT!");
+            // console.log("HIT!");
           } else {
-            console.log("safe");
+            // console.log("safe");
           }
         }
       }
@@ -157,7 +167,13 @@ function drawOtherPlayers() {
     return;
   }
   for (let i = 0; i < players.length; i++) {
-    image(playerAnimations[0], players[i].x, floorY, 50, -100);
+    // console.log("12345uy");
+    image(playerAnimations[0], players[i].x - mainPlayer.x, floorY, 25, -50);
+    players[i].counter--;
+    if (players[i].counter < 0) {
+      players.splice(i, 5);
+      // console.log("123");
+    }
   }
 }
 

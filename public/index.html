@@ -42,6 +42,7 @@
         position: absolute;
         left: 40vw;
         top: 30vh;
+        opacity: 0;
       }
       #restart {
         position: absolute;
@@ -99,19 +100,22 @@
     Restart and Submit
   </button>
   <div id="Score">
-    1 2 3 4
+    High Scores:
   </div>
   <script>
     // $("#restart").disabled = true;
     $("#restart").attr("disabled", true);
+    $("#name").attr("disabled", true);
     function showGameOver() {
       $("#game_over").css("opacity", 100 + "%");
       $("#restart").css("opacity", 100 + "%");
+      $("#name").css("opacity", 100 + "%");
       $("#restart").attr("disabled", false);
+      $("#name").attr("disabled", false);
     }
     function myReload() {
       socket.emit("score", {
-        name: $("name").innerHTML,
+        name: $("#name").val(),
         score: mainPlayer.getScore()
       });
       window.location.reload();
