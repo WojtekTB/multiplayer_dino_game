@@ -57,7 +57,7 @@ function setup() {
     cactusContainer1.relativeX = cactusContainer2.relativeX;
     cactusContainer2.relativeX = cactusContainer3.relativeX;
     cactusContainer3.relativeX++; //move the id along
-    console.log(cactusContainer1, cactusContainer2, cactusContainer3);
+    // console.log(cactusContainer1, cactusContainer2, cactusContainer3);
   });
   socket.on("players", data => {
     players = data;
@@ -116,9 +116,7 @@ function draw() {
   scoreElement.innerHTML = `Score: ${mainPlayer.getScore()} pt.`;
   distanceElement.innerHTML = `Distance: ${mainPlayer.getDistance()} m.`;
   drawCactuses();
-  if (frameCount % 500) {
-    emitMyCord();
-  }
+  emitMyCord();
   drawOtherPlayers();
   if (keyIsDown(32)) {
     mainPlayer.jump();
