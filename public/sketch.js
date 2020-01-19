@@ -7,8 +7,8 @@ var myCanvas;
 
 var cactusImage;
 var cactusContainer;
-var cactusContainer1;
 var cactusContainer2;
+var cactusContainer3;
 var cactusHeight = 50;
 var cactusWidth = 25;
 
@@ -47,6 +47,14 @@ function setup() {
     cactusContainer = data;
     // console.log(data);
   });
+  socket.on("cactusMap2", data => {
+    cactusContainer2 = data;
+    // console.log(data);
+  });
+  socket.on("cactusMap3", data => {
+    cactusContainer3 = data;
+    // console.log(data);
+  });
   socket.on("players", data => {
     players = data;
   });
@@ -74,7 +82,7 @@ function setup() {
   // testCactusContainer = new CactusContainer();
   // cactusContainer1 = testCactusContainer.getCactuses(1);
   // cactusContainer2 = testCactusContainer.getCactuses(1001);
-  console.log(cactusContainer1);
+  // console.log(cactusContainer1);
   document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
   for (let i = 0; i < 3; i++) {
     clouds.push(
@@ -109,13 +117,18 @@ function draw() {
   if (keyIsDown(32)) {
     mainPlayer.jump();
   }
+  // mainPlayer.y = mouseY;
+  // mainPlayer.vy = 0;
 }
 
 function drawCactuses() {
   let scale = 2000;
   if ((cactusContainer != null) & (mainPlayer.x > 0)) {
-    let cactuses = cactusContainer[Math.floor(mainPlayer.x / scale)];
-    let cactuses2 = cactusContainer[Math.floor(mainPlayer.x / scale) - 1];
+    let cactuses = cactusContainer;
+    let cactuses2 = cactusContainer2;
+    let cactuses3 = cactusContainer3;
+    // let cactuses = cactusContainer[Math.floor(mainPlayer.x / scale)];
+    // let cactuses2 = cactusContainer[Math.floor(mainPlayer.x / scale) - 1];
     // console.log(Math.floor(mainPlayer.x / scale));
     // fill(255, 0, 0);
     // console.log(cactuses);
@@ -150,6 +163,37 @@ function drawCactuses() {
     if (cactuses2 != null) {
       // fill(0, 255, 0);
       for (cactus of cactuses2) {
+        // rect(
+        //   innerWidth / 20 + (cactus.x - (mainPlayer.x % scale)) - scale,
+        //   floorY,
+        //   cactusWidth,
+        //   -cactusHeight
+        // );
+        image(
+          cactusImage,
+          innerWidth / 10 + (cactus.x - (mainPlayer.x % scale)) + scale,
+          floorY,
+          cactusWidth,
+          -cactusHeight
+        );
+        let cactusRealX =
+          mainPlayer.x - (mainPlayer.x % scale) - scale + cactus.x;
+        if (
+          (mainPlayer.x < cactusRealX + cactusWidth) &
+          (mainPlayer.x > cactusRealX)
+        ) {
+          if (mainPlayer.y > floorY - cactusHeight) {
+            // console.log("HIT!");
+          } else {
+            // console.log("safe");
+          }
+        }
+      }
+    }
+    // console.log(cactuses, cactuses2);
+    if (cactuses3 != null) {
+      // fill(0, 255, 0);
+      for (cactus of cactuses3) {
         // rect(
         //   innerWidth / 20 + (cactus.x - (mainPlayer.x % scale)) - scale,
         //   floorY,
