@@ -46,7 +46,7 @@ class CactusContainer {
     for (let i = 0; i < numberOfCactuses; i++) {
       cactuses.push(
         Cactus.makeCactus(
-          getRandomArbitrary(200, this.rangeScalew + 200),
+          getRandomArbitrary(200, this.rangeScale + 200),
           25,
           50
         )
@@ -55,6 +55,9 @@ class CactusContainer {
     this.range.push(cactuses);
   }
 }
+
+var scores = [];
+var players = [];
 
 class Cactus {
   static makeCactus(x, width, height) {
@@ -66,12 +69,34 @@ var serverCactusContainer = new CactusContainer();
 
 io.sockets.on("connection", socket => {
   console.log(`New connection: ${socket.id}`);
+  socket.emit("scoreBoard", scores);
   socket.send(socket.id);
   socket.on("player", playerData);
   socket.emit("cactusMap", serverCactusContainer.range);
+  socket.on("x", data => {
+    for (let i = 0; i < players.length; i++) {
+      if (players[i].id == data.id) {
+        players[i].x = data.x;
+        return;
+      }
+    }
+    players.push(data);
+  });
+  socket.on("score", data => {
+    // console.log(data);
+    scores.push(data);
+    socket.emit("scoreBoard", scores);
+  });
+  setInterval(function() {
+    socket.emit("players", players);
+  }, 10);
 });
 
-var players = [];
+// setTimeout(emitOtherPlayers, 10);
+
+// function emitOtherPlayers() {
+//   socket.emit("players", players);
+// }
 
 function playerData(data) {
   if (players.length == 0) {
@@ -81,7 +106,9 @@ function playerData(data) {
   for (let i = 0; i < players.length; i++) {
     if (players[i].id == data.id) {
       players[i] = data.id;
+      return;
     }
   }
   players.push(data);
+  socket.emit("players", players);
 }
