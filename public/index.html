@@ -38,6 +38,11 @@
         width: 95vw;
         opacity: 0;
       }
+      #name {
+        position: absolute;
+        left: 40vw;
+        top: 30vh;
+      }
       #restart {
         position: absolute;
         left: 40vw;
@@ -47,6 +52,11 @@
         height: 10vh;
         background-color: aliceblue;
         opacity: 0;
+      }
+      #Score {
+        position: absolute;
+        left: 30vw;
+        bottom: 30vh;
       }
     </style>
     <meta charset="UTF-8" />
@@ -82,11 +92,15 @@
     id="addSpeed"
     onclick="addSpeed()"
   />
+  <input type="text" id="name" />
   <img src="./images/game_over.png" id="game_over" />
   <!-- <input type="button" id="restart" onclick="reset();" /> -->
-  <button id="restart" onclick="window.location.reload();">
-    Restart
+  <button id="restart" onclick="myReload()">
+    Restart and Submit
   </button>
+  <div id="Score">
+    1 2 3 4
+  </div>
   <script>
     // $("#restart").disabled = true;
     $("#restart").attr("disabled", true);
@@ -94,6 +108,13 @@
       $("#game_over").css("opacity", 100 + "%");
       $("#restart").css("opacity", 100 + "%");
       $("#restart").attr("disabled", false);
+    }
+    function myReload() {
+      socket.emit("score", {
+        name: $("name").innerHTML,
+        score: mainPlayer.getScore()
+      });
+      window.location.reload();
     }
   </script>
 </html>

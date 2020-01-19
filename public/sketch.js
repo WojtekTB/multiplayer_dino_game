@@ -22,6 +22,8 @@ var groundImageWidht;
 var scoreElement;
 var distanceElement;
 
+var players = [];
+
 function preload() {
   for (let i = 0; i < 3; i++) {
     playerAnimations.push(loadImage(`./images/dino_animation/frame_${i}.png`));
@@ -40,7 +42,14 @@ function setup() {
     cactusContainer = data;
     // console.log(data);
   });
+  socket.on("players", data => {
+    console.log("lel");
+    players.push(data);
+  });
 
+  socket.on("scoreBoard", data => {
+    console.log(data);
+  });
   myCanvas = createCanvas(displayWidth, displayHeight);
   myCanvas.parent("mainSketch");
   background(0);
@@ -79,7 +88,8 @@ function drawCactuses() {
     let cactuses = cactusContainer[Math.floor(mainPlayer.x / scale)];
     let cactuses2 = cactusContainer[Math.floor(mainPlayer.x / scale) - 1];
     // console.log(Math.floor(mainPlayer.x / scale));
-    fill(255, 0, 0);
+    // fill(255, 0, 0);
+    // console.log(cactuses);
     for (cactus of cactuses) {
       // rect(
       //   innerWidth / 20 + (cactus.x - (mainPlayer.x % scale)),
@@ -109,7 +119,7 @@ function drawCactuses() {
     }
     // console.log(mainPlayer.x, mainPlayer.y);
     if (cactuses2 != null) {
-      fill(0, 255, 0);
+      // fill(0, 255, 0);
       for (cactus of cactuses2) {
         // rect(
         //   innerWidth / 20 + (cactus.x - (mainPlayer.x % scale)) - scale,
@@ -139,6 +149,15 @@ function drawCactuses() {
       }
     }
     // console.log(cactuses, cactuses2);
+  }
+}
+
+function drawOtherPlayers() {
+  if (players.length == 0) {
+    return;
+  }
+  for (let i = 0; i < players.length; i++) {
+    image(playerAnimations[0], players[i].x, floorY, 50, -100);
   }
 }
 

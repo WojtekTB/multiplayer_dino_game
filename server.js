@@ -46,7 +46,7 @@ class CactusContainer {
     for (let i = 0; i < numberOfCactuses; i++) {
       cactuses.push(
         Cactus.makeCactus(
-          getRandomArbitrary(200, this.rangeScalew + 200),
+          getRandomArbitrary(200, this.rangeScale + 200),
           25,
           50
         )
@@ -55,6 +55,8 @@ class CactusContainer {
     this.range.push(cactuses);
   }
 }
+
+var scores = [];
 
 class Cactus {
   static makeCactus(x, width, height) {
@@ -69,6 +71,13 @@ io.sockets.on("connection", socket => {
   socket.send(socket.id);
   socket.on("player", playerData);
   socket.emit("cactusMap", serverCactusContainer.range);
+  socket.on("x", data => {
+    socket.emit("players", data);
+  });
+  socket.on("score", data => {
+    scores.push(data);
+    socket.emit("scoreBoard", scores);
+  });
 });
 
 var players = [];
