@@ -65,8 +65,8 @@ class Player {
 
   decreaseSpeed() {
     this.speed--;
-    if (this.speed < 0) {
-      this.speed = 0;
+    if (this.speed < 1) {
+      this.speed = 1;
     }
   }
   addSpeed() {

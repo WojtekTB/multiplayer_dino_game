@@ -4,6 +4,7 @@ var socket;
 var socketID;
 
 var myCanvas;
+var localStorage;
 
 var cactusImage;
 var cactusContainer1 = { array: [], relativeX: 0 };
@@ -45,6 +46,15 @@ function preload() {
 }
 
 function setup() {
+  localStorage = window.localStorage;
+
+  $("#intro-button").click(() => {
+    if (myArrayPointer != 4) {
+      hasHat = true;
+    }
+    $("#intro-div").remove();
+    loop();
+  });
   noLoop();
   socket = io();
   socket.on("message", data => {
@@ -71,11 +81,14 @@ function setup() {
   });
 
   socket.on("scoreBoard", data => {
+    let leaderboard = $("#Score");
+    leaderboard.empty();
+    leaderboard.append("<li>HighScores:<li>");
     let score = "";
     for (point of data) {
       // score += `\nName: ${point.name}  Score: ${point.score}`;
       console.log("I added stuff");
-      $("#Score").append(`<li>Name: ${point.name}  Score: ${point.score}</li>`);
+      leaderboard.append(`<li>Name: ${point.name}  Score: ${point.score}</li>`);
     }
     // $("#Score").innerHTML = score;
   });
@@ -94,7 +107,9 @@ function setup() {
   // cactusContainer1 = testCactusContainer.getCactuses(1);
   // cactusContainer2 = testCactusContainer.getCactuses(1001);
   // console.log(cactusContainer1);
-  document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
+  document.getElementById(
+    "speed"
+  ).innerHTML = `Starting Speed: ${mainPlayer.speed}`;
   for (let i = 0; i < 3; i++) {
     clouds.push(
       new Cloud(
@@ -104,6 +119,28 @@ function setup() {
     );
   }
   // noLoop();
+}
+
+function restart() {
+  //reseting html
+  $("#game_over").css("opacity", 0);
+  $("#restart").css("opacity", 0);
+  $("#name").css("opacity", 0);
+  $("#restart").click(function() {});
+
+  mainPlayer = new Player(10, innerHeight * 0.025, floorY, playerAnimations);
+  document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
+  clouds = [];
+
+  for (let i = 0; i < 3; i++) {
+    clouds.push(
+      new Cloud(
+        random(innerWidth, innerWidth + 300),
+        random(innerHeight * (2 / 3), 0)
+      )
+    );
+  }
+  loop();
 }
 
 function mousePressed() {
@@ -123,7 +160,7 @@ function draw() {
   scoreElement.innerHTML = `Score: ${mainPlayer.getScore()} pt.`;
   distanceElement.innerHTML = `Distance: ${mainPlayer.getDistance()} m.`;
   drawCactuses();
-  if (frameCount % 500) {
+  if (frameCount % 100) {
     emitMyCord();
   }
   drawOtherPlayers();
@@ -146,11 +183,7 @@ function drawCactuses() {
     let cactuses1 = cactusContainer1.array;
     let cactuses2 = cactusContainer2.array;
     let cactuses3 = cactusContainer3.array;
-    // let cactuses = cactusContainer[Math.floor(mainPlayer.x / scale)];
-    // let cactuses2 = cactusContainer[Math.floor(mainPlayer.x / scale) - 1];
-    // console.log(Math.floor(mainPlayer.x / scale));
     // fill(255, 0, 0);
-    // console.log(cactuses);
     for (cactus of cactuses2) {
       image(
         cactusImage,
@@ -223,7 +256,13 @@ function drawOtherPlayers() {
     if (players[i].id == socketID) {
       continue;
     }
-    image(deadPlayer, players[i].x - mainPlayer.x, players[i].y, 50, -50);
+    image(
+      deadPlayer,
+      players[i].x - mainPlayer.x,
+      floorY - players[i].y,
+      50,
+      -50
+    );
   }
 }
 
@@ -240,23 +279,27 @@ function drawGround() {
 }
 
 function emitMyCord() {
-  socket.emit("x", { id: socketID, x: mainPlayer.x, y: mainPlayer.y });
+  socket.emit("x", { id: socketID, x: mainPlayer.x, y: floorY - mainPlayer.y });
 }
 
 function decreaseSpeed() {
   mainPlayer.decreaseSpeed();
-  document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
+  document.getElementById(
+    "speed"
+  ).innerHTML = `Starting Speed: ${mainPlayer.speed}`;
 }
 function addSpeed() {
   mainPlayer.addSpeed();
-  document.getElementById("speed").innerHTML = `Speed: ${mainPlayer.speed}`;
+  document.getElementById(
+    "speed"
+  ).innerHTML = `Starting Speed: ${mainPlayer.speed}`;
 }
 function died() {
   socket.emit("dead", { id: socketID });
   console.log("you died");
 
-  noLoop();
   showGameOver();
+  noLoop();
 }
 
 class Cloud {
@@ -270,7 +313,7 @@ class Cloud {
     this.x -= this.speed;
     if (this.x < -cloudImage.width) {
       this.x = random(innerWidth, innerWidth + 300);
-      this.y = random(innerHeight * (2 / 3), 0);
+      this.y = random(innerHeight * (3 / 5), 0);
       this.speed = random(1, 5);
     }
   }

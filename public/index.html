@@ -35,7 +35,7 @@
         position: absolute;
         left: 0vw;
         top: 20vh;
-        width: 95vw;
+        width: 80vw;
         opacity: 0;
       }
       #name {
@@ -51,7 +51,7 @@
         top: 40vh;
         color: black;
         width: 0vw;
-        height: 10vh;
+        height: 0vh;
         background-color: aliceblue;
         opacity: 0;
         z-index: -1;
@@ -102,7 +102,7 @@
     <script src="sketch.js"></script>
     <script src="./js/Player.js"></script>
     <script src="./js/CactusContainer.js"></script>
-    <title>Client Side</title>
+    <title>Dino Royale!</title>
   </head>
   <body></body>
   <div id="mainSketch"></div>
@@ -110,54 +110,69 @@
     <p id="score">Score: 0 pt.</p>
     <p id="distance">Distance: 0 m.</p>
   </div>
-  <input
-    type="image"
-    src="./images/elements/play1.png"
-    class="button"
-    id="decreaseSpeed"
-    onclick="decreaseSpeed()"
-  />
-  <p id="speed">Speed:</p>
-  <input
-    type="image"
-    src="./images/elements/play.png"
-    class="button"
-    id="addSpeed"
-    onclick="addSpeed()"
-  />
-  <input type="text" id="name" />
+  <input type="text" id="name" placeholder="Your name here" />
   <img src="./images/game_over.png" id="game_over" />
   <!-- <input type="button" id="restart" onclick="reset();" /> -->
-  <button id="restart" onclick="myReload()">
-    Restart and Submit
-  </button>
+  <input type="image" id="restart" src="./images/elements/restart.png" />
   <ul id="Score">
     <li>High Scores:</li>
   </ul>
   <script>
+    $("#someid").addClass("load");
+
+    setTimeout(function() {
+      $("#someid").addClass("done");
+    }, 2000);
     // $("#restart").disabled = true;
     // $("#restart").attr("disabled", true);
 
     $("#restart").click();
     $("#name").attr("disabled", true);
     function showGameOver() {
-      $("#restart").click(myReload);
+      let name = localStorage.getItem("name");
+      if (name != null) {
+        $("#name").val(name);
+      }
       $("#game_over").css("opacity", 100 + "%");
+      $("#game_over").css("left", innerWidth / 2 - $("#game_over").width() / 2);
+
+      $("#restart").click(myReload);
       $("#restart").css("opacity", 100 + "%");
-      $("#restart").css("width", 30 + "vw");
+      $("#restart").css("width", 20 + "vw");
+      $("#restart").css("height", 10 + "vw");
       $("#restart").css("z-index", 1);
+      $("#restart").css("left", innerWidth / 2 - $("#restart").width() / 2);
+
       $("#name").css("width", 30 + "vw");
       $("#name").css("left", 40 + "vw");
       $("#name").css("opacity", 100 + "%");
+      $("#name").css("left", innerWidth / 2 - $("#name").width() / 2);
+
       $("#restart").attr("disabled", false);
       $("#name").attr("disabled", false);
     }
     function myReload() {
-      socket.emit("score", {
-        name: $("#name").val(),
-        score: mainPlayer.getScore()
-      });
-      window.location.reload();
+      let name = $("#name")
+        .val()
+        .replace(/\s/g, "");
+      if (name == "") {
+        let answer = confirm(
+          "Your score will not be recorded if you do not put a name down. There is no penalty for submitting low scores. \n\nAre you sure you want to proceed?"
+        );
+        if (answer == true) {
+          localStorage.setItem("name", $("#name").val());
+          restart();
+        } else {
+          return;
+        }
+      } else {
+        socket.emit("score", {
+          name: $("#name").val(),
+          score: mainPlayer.getScore()
+        });
+        localStorage.setItem("name", $("#name").val());
+        restart();
+      }
     }
   </script>
 
@@ -171,6 +186,21 @@
       <button id="nextButton">Next</button>
     </div>
   </div>
+  <input
+    type="image"
+    src="./images/elements/play1.png"
+    class="button"
+    id="decreaseSpeed"
+    onclick="decreaseSpeed()"
+  />
+  <p id="speed">Starting Speed:</p>
+  <input
+    type="image"
+    src="./images/elements/play.png"
+    class="button"
+    id="addSpeed"
+    onclick="addSpeed()"
+  />
 
   <script>
     let hatArray = [
@@ -202,14 +232,6 @@
       );
     });
     var hasHat = false;
-    $(window).ready(function() {
-      $("#intro-button").click(() => {
-        if (myArrayPointer != 4) {
-          hasHat = true;
-        }
-        $("#intro-div").remove();
-        loop();
-      });
-    });
+    $("#intro-button").click(() => {});
   </script>
 </html>

@@ -95,7 +95,7 @@ io.sockets.on("connection", socket => {
     players.push(data);
   });
   socket.on("score", data => {
-    console.log(data);
+    console.log("A new high score submitted: " + data);
     if (data.name == ``) {
       return;
     }
@@ -103,9 +103,11 @@ io.sockets.on("connection", socket => {
       scores.push(data);
     }
     for (let i = 0; i < scores.length; i++) {
-      if (data.score > scores[i].score) {
-        scores.splice(i, 0, data);
-        break;
+      if (data.name == scores[i].name) {
+        if (data.score > scores[i].score) {
+          scores.splice(i, 0, data);
+          break;
+        }
       }
     }
     if (scores.length > 5) {
