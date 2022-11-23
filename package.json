@@ -19,6 +19,6 @@
   "homepage": "https://github.com/WojtekTB/multiplayer_dino_game#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.5.0"
   }
 }
